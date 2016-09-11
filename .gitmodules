@@ -1,0 +1,3 @@
+[submodule "libdelugeclient-sharp"]
+	path = libdelugeclient-sharp
+	url = git@github.com:rjrudman/libdelugeclient-sharp.git
