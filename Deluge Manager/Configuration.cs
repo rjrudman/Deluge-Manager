@@ -10,10 +10,11 @@ namespace Deluge_Manager
 
 		public static ConfigurationSettings Settings => _settings ?? (_settings = LoadSettings());
 
+		public const string CONFIG_PATH = "config.json";
 		private static ConfigurationSettings LoadSettings()
 		{
 			return JsonConvert.DeserializeObject<ConfigurationSettings>(
-				File.ReadAllText("config.json")
+				File.ReadAllText(CONFIG_PATH)
 			);
 		}
 	}

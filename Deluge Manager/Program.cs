@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using CodeRinseRepeat.Deluge;
+using Newtonsoft.Json;
 
 namespace Deluge_Manager
 {
@@ -9,6 +11,7 @@ namespace Deluge_Manager
 	{ 
 	    private static void Main()
         {
+			Console.WriteLine($"Using settings from {Path.GetFullPath(ConfigurationManager.CONFIG_PATH)}: \n{JsonConvert.SerializeObject(ConfigurationManager.Settings, Formatting.Indented)}");
             var client = new DelugeClient(ConfigurationManager.Settings.LocalDelugeUri);
             client.Login(ConfigurationManager.Settings.LocalDelugePassword);
 
