@@ -18,10 +18,11 @@ namespace Deluge_Manager
             var torrents = client.GetTorrents();
 
             var torrentsRequiringFix = torrents.Where(torrent => torrent.Trackers.Any(t => t.Url != ConfigurationManager.Settings.PrivateTracker)).ToList();
-			
-	        FixTorrentLocally(torrentsRequiringFix, client);
+
 			UploadToSeedbox(torrentsRequiringFix);
 
+			FixTorrentLocally(torrentsRequiringFix, client);
+			
 			Console.WriteLine("Finished");
         }
 
