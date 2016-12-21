@@ -28,6 +28,9 @@ namespace Deluge_Manager
 
 	    private static void FixTorrentLocally(IEnumerable<Torrent> torrentsRequiringFix, DelugeClient client)
 	    {
+		    if (!ConfigurationManager.Settings.StripLocalTrackers)
+			    return;
+
 		    foreach (var torrent in torrentsRequiringFix)
 		    {
 			    Console.Write("Fixing {0} locally...", torrent.Name);
@@ -53,20 +56,22 @@ namespace Deluge_Manager
                 Console.Write("Uploading {0} ...", torrent.Name);
                 client.AddMagnetURI(magnetURI);
 
-                Console.Write(" fixing trackers...");
+	            var trackersToSet = ConfigurationManager.Settings.AppendRemoteTracker
+		            ? torrent.Trackers.Union(new[]
+		            {
+			            new Tracker
+			            {
+				            Tier = torrent.Trackers.Max(t => t.Tier) + 1,
+				            Url = ConfigurationManager.Settings.PrivateTracker
+			            }
+		            })
+		            : torrent.Trackers;
 
-                client.SetTrackers(torrent.Hash,
-                    torrent.Trackers.Union(new[]
-                    {
-                        new Tracker
-                        {
-                            Tier = torrent.Trackers.Max(t => t.Tier) + 1,
-                            Url = ConfigurationManager.Settings.PrivateTracker
-						}
-                    }).ToArray()
-                ); 
+				Console.WriteLine(" fixing trackers...");
 
-                Console.WriteLine(" done.");
+				client.SetTrackers(torrent.Hash, trackersToSet.ToArray());
+
+	            Console.WriteLine(" done.");
             }
         }
 

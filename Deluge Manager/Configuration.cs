@@ -28,5 +28,8 @@ namespace Deluge_Manager
 		public string RemoteDelugePassword { get; set; }
 
 		public string PrivateTracker { get; set; }
+
+		public bool StripLocalTrackers { get; set; }
+		public bool AppendRemoteTracker { get; set; }
 	}
 }
